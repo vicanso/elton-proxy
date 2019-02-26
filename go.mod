@@ -1,4 +1,4 @@
-module github.com/vicanso/cod-logger
+module github.com/vicanso/cod-proxy
 
 require (
 	github.com/vicanso/cod v0.0.1

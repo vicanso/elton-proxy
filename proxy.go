@@ -28,8 +28,8 @@ import (
 )
 
 const (
-	// ErrCategoryProxy proxy error category
-	ErrCategoryProxy = "cod-proxy"
+	// ErrCategory proxy error category
+	ErrCategory = "cod-proxy"
 )
 
 var (
@@ -37,7 +37,7 @@ var (
 	errTargetIsNil = &hes.Error{
 		Message:    "target can not be nil",
 		StatusCode: http.StatusBadRequest,
-		Category:   ErrCategoryProxy,
+		Category:   ErrCategory,
 	}
 )
 

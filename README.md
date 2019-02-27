@@ -1,6 +1,8 @@
 # cod-proxy
 
-Proxy middleware for cod, it can proxy http requset to other host.
+[![Build Status](https://img.shields.io/travis/vicanso/cod-proxy.svg?label=linux+build)](https://travis-ci.org/vicanso/cod-proxy)
+
+Proxy middleware for cod, it can proxy http request to other host.
 
 ```go
 package main

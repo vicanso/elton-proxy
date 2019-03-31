@@ -12,10 +12,10 @@ import (
 
 func TestProxy(t *testing.T) {
 	t.Run("normal", func(t *testing.T) {
-		target, _ := url.Parse("https://www.baidu.com")
+		target, _ := url.Parse("https://github.com")
 		config := Config{
 			Target:    target,
-			Host:      "www.baidu.com",
+			Host:      "github.com",
 			Transport: &http.Transport{},
 			Rewrites: []string{
 				"/api/*:/$1",
@@ -23,6 +23,7 @@ func TestProxy(t *testing.T) {
 		}
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/api/", nil)
+		req.Header.Set("Accept-Encoding", "gzip")
 		originalPath := req.URL.Path
 		originalHost := req.Host
 		resp := httptest.NewRecorder()
@@ -33,6 +34,9 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		fn(c)
+		if c.GetHeader("Content-Encoding") != "gzip" {
+			t.Fatalf("should return gzip data")
+		}
 		if c.Request.URL.Path != originalPath {
 			t.Fatalf("request path should be reverted")
 		}

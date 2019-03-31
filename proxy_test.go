@@ -108,4 +108,25 @@ func TestProxy(t *testing.T) {
 			t.Fatalf("nil proxy should return error")
 		}
 	})
+
+	t.Run("proxy error", func(t *testing.T) {
+		target, _ := url.Parse("https://a")
+		config := Config{
+			TargetPicker: func(c *cod.Context) (*url.URL, error) {
+				return target, nil
+			},
+			Transport: &http.Transport{},
+		}
+		fn := New(config)
+		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
+		resp := httptest.NewRecorder()
+		c := cod.NewContext(resp, req)
+		c.Next = func() error {
+			return nil
+		}
+		err := fn(c)
+		if err == nil || err.Error() != "category=cod-proxy, message=dial tcp: lookup a: no such host" {
+			t.Fatalf("catch proxy error fail")
+		}
+	})
 }

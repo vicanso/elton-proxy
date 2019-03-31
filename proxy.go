@@ -147,7 +147,16 @@ func New(config Config) cod.Handler {
 			originalHost = req.Host
 			req.Host = config.Host
 		}
+		p.ErrorHandler = func(_ http.ResponseWriter, _ *http.Request, e error) {
+			he := hes.NewWithError(e)
+			he.Category = ErrCategory
+			he.Exception = true
+			err = he
+		}
 		p.ServeHTTP(c, req)
+		if err != nil {
+			return
+		}
 		if originalPath != "" {
 			req.URL.Path = originalPath
 		}

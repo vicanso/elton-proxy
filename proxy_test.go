@@ -125,7 +125,7 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		err := fn(c)
-		if err == nil || err.Error() != "category=cod-proxy, message=dial tcp: lookup a: no such host" {
+		if err == nil {
 			t.Fatalf("catch proxy error fail")
 		}
 	})

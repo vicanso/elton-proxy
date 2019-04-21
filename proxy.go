@@ -35,6 +35,7 @@ const (
 var (
 	// errTargetIsNil target is nil
 	errTargetIsNil = &hes.Error{
+		Exception:  true,
 		Message:    "target can not be nil",
 		StatusCode: http.StatusBadRequest,
 		Category:   ErrCategory,

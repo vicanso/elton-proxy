@@ -129,4 +129,28 @@ func TestProxy(t *testing.T) {
 			t.Fatalf("catch proxy error fail")
 		}
 	})
+
+	t.Run("proxy done", func(t *testing.T) {
+		target, _ := url.Parse("https://www.baidu.com")
+		done := false
+		config := Config{
+			Target:    target,
+			Host:      "www.baidu.com",
+			Transport: &http.Transport{},
+			Done: func(_ *cod.Context) {
+				done = true
+			},
+		}
+		fn := New(config)
+		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
+		resp := httptest.NewRecorder()
+		c := cod.NewContext(resp, req)
+		c.Next = func() error {
+			return nil
+		}
+		fn(c)
+		if !done {
+			t.Fatalf("done callback function should be called")
+		}
+	})
 }

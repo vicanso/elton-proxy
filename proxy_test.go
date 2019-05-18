@@ -7,11 +7,13 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/vicanso/cod"
 )
 
 func TestProxy(t *testing.T) {
 	t.Run("normal", func(t *testing.T) {
+		assert := assert.New(t)
 		target, _ := url.Parse("https://github.com")
 		config := Config{
 			Target:    target,
@@ -34,22 +36,15 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		fn(c)
-		if c.GetHeader("Content-Encoding") != "gzip" {
-			t.Fatalf("should return gzip data")
-		}
-		if c.Request.URL.Path != originalPath {
-			t.Fatalf("request path should be reverted")
-		}
-		if req.Host != originalHost {
-			t.Fatalf("request host should be reverted")
-		}
-
-		if !done || c.StatusCode != http.StatusOK {
-			t.Fatalf("http proxy fail")
-		}
+		assert.Equal(c.GetHeader("Content-Encoding"), "gzip")
+		assert.Equal(c.Request.URL.Path, originalPath)
+		assert.Equal(req.Host, originalHost)
+		assert.True(done)
+		assert.Equal(c.StatusCode, http.StatusOK)
 	})
 
 	t.Run("target picker", func(t *testing.T) {
+		assert := assert.New(t)
 		target, _ := url.Parse("https://www.baidu.com")
 		config := Config{
 			TargetPicker: func(c *cod.Context) (*url.URL, error) {
@@ -68,12 +63,12 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		fn(c)
-		if !done || c.StatusCode != http.StatusOK {
-			t.Fatalf("http proxy fail")
-		}
+		assert.True(done)
+		assert.Equal(c.StatusCode, http.StatusOK)
 	})
 
 	t.Run("target picker error", func(t *testing.T) {
+		assert := assert.New(t)
 		config := Config{
 			TargetPicker: func(c *cod.Context) (*url.URL, error) {
 				return nil, errors.New("abcd")
@@ -86,12 +81,11 @@ func TestProxy(t *testing.T) {
 		resp := httptest.NewRecorder()
 		c := cod.NewContext(resp, req)
 		err := fn(c)
-		if err.Error() != "abcd" {
-			t.Fatalf("proxy should return error")
-		}
+		assert.Equal(err.Error(), "abcd")
 	})
 
 	t.Run("no target", func(t *testing.T) {
+		assert := assert.New(t)
 		config := Config{
 			TargetPicker: func(c *cod.Context) (*url.URL, error) {
 				return nil, nil
@@ -104,12 +98,11 @@ func TestProxy(t *testing.T) {
 		resp := httptest.NewRecorder()
 		c := cod.NewContext(resp, req)
 		err := fn(c)
-		if err.Error() != "category=cod-proxy, message=target can not be nil" {
-			t.Fatalf("nil proxy should return error")
-		}
+		assert.Equal(err.Error(), "category=cod-proxy, message=target can not be nil")
 	})
 
 	t.Run("proxy error", func(t *testing.T) {
+		assert := assert.New(t)
 		target, _ := url.Parse("https://a")
 		config := Config{
 			TargetPicker: func(c *cod.Context) (*url.URL, error) {
@@ -125,12 +118,11 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		err := fn(c)
-		if err == nil {
-			t.Fatalf("catch proxy error fail")
-		}
+		assert.NotNil(err)
 	})
 
 	t.Run("proxy done", func(t *testing.T) {
+		assert := assert.New(t)
 		target, _ := url.Parse("https://www.baidu.com")
 		done := false
 		config := Config{
@@ -149,8 +141,6 @@ func TestProxy(t *testing.T) {
 			return nil
 		}
 		fn(c)
-		if !done {
-			t.Fatalf("done callback function should be called")
-		}
+		assert.True(done)
 	})
 }

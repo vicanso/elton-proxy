@@ -43,12 +43,14 @@ var (
 )
 
 type (
+	// Done http proxy done callback
+	Done func(*cod.Context)
 	// TargetPicker target picker function
-	TargetPicker func(c *cod.Context) (*url.URL, error)
+	TargetPicker func(c *cod.Context) (*url.URL, Done, error)
 	// Config proxy config
 	Config struct {
 		// Done proxy done callback
-		Done         func(*cod.Context)
+		Done         Done
 		Target       *url.URL
 		Rewrites     []string
 		Host         string
@@ -125,8 +127,9 @@ func New(config Config) cod.Handler {
 			return c.Next()
 		}
 		target := config.Target
+		var done Done
 		if target == nil {
-			target, err = config.TargetPicker(c)
+			target, done, err = config.TargetPicker(c)
 			if err != nil {
 				return
 			}
@@ -159,6 +162,9 @@ func New(config Config) cod.Handler {
 		p.ServeHTTP(c, req)
 		if config.Done != nil {
 			config.Done(c)
+		}
+		if done != nil {
+			done(c)
 		}
 		if err != nil {
 			return

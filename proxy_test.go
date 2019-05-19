@@ -47,8 +47,8 @@ func TestProxy(t *testing.T) {
 		assert := assert.New(t)
 		target, _ := url.Parse("https://www.baidu.com")
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, error) {
-				return target, nil
+			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+				return target, nil, nil
 			},
 			Host:      "www.baidu.com",
 			Transport: &http.Transport{},
@@ -70,8 +70,8 @@ func TestProxy(t *testing.T) {
 	t.Run("target picker error", func(t *testing.T) {
 		assert := assert.New(t)
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, error) {
-				return nil, errors.New("abcd")
+			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+				return nil, nil, errors.New("abcd")
 			},
 			Host:      "www.baidu.com",
 			Transport: &http.Transport{},
@@ -87,8 +87,8 @@ func TestProxy(t *testing.T) {
 	t.Run("no target", func(t *testing.T) {
 		assert := assert.New(t)
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, error) {
-				return nil, nil
+			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+				return nil, nil, nil
 			},
 			Host:      "www.baidu.com",
 			Transport: &http.Transport{},
@@ -105,8 +105,8 @@ func TestProxy(t *testing.T) {
 		assert := assert.New(t)
 		target, _ := url.Parse("https://a")
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, error) {
-				return target, nil
+			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+				return target, nil, nil
 			},
 			Transport: &http.Transport{},
 		}

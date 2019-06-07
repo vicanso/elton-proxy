@@ -15,6 +15,7 @@
 package proxy
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -40,6 +41,7 @@ var (
 		StatusCode: http.StatusBadRequest,
 		Category:   ErrCategory,
 	}
+	errNoTargetFunction = errors.New("require target or targer picker")
 )
 
 type (
@@ -112,7 +114,7 @@ func generateRewrites(rewrites []string) (m map[*regexp.Regexp]string, err error
 // New create a proxy middleware
 func New(config Config) cod.Handler {
 	if config.Target == nil && config.TargetPicker == nil {
-		panic("require target or targer picker")
+		panic(errNoTargetFunction)
 	}
 	regs, err := generateRewrites(config.Rewrites)
 	if err != nil {

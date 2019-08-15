@@ -25,12 +25,12 @@ import (
 
 	"github.com/vicanso/hes"
 
-	"github.com/vicanso/cod"
+	"github.com/vicanso/elton"
 )
 
 const (
 	// ErrCategory proxy error category
-	ErrCategory = "cod-proxy"
+	ErrCategory = "elton-proxy"
 )
 
 var (
@@ -46,9 +46,9 @@ var (
 
 type (
 	// Done http proxy done callback
-	Done func(*cod.Context)
+	Done func(*elton.Context)
 	// TargetPicker target picker function
-	TargetPicker func(c *cod.Context) (*url.URL, Done, error)
+	TargetPicker func(c *elton.Context) (*url.URL, Done, error)
 	// Config proxy config
 	Config struct {
 		// Done proxy done callback
@@ -58,7 +58,7 @@ type (
 		Host         string
 		Transport    *http.Transport
 		TargetPicker TargetPicker
-		Skipper      cod.Skipper
+		Skipper      elton.Skipper
 	}
 )
 
@@ -112,7 +112,7 @@ func generateRewrites(rewrites []string) (m map[*regexp.Regexp]string, err error
 }
 
 // New create a proxy middleware
-func New(config Config) cod.Handler {
+func New(config Config) elton.Handler {
 	if config.Target == nil && config.TargetPicker == nil {
 		panic(errNoTargetFunction)
 	}
@@ -122,9 +122,9 @@ func New(config Config) cod.Handler {
 	}
 	skipper := config.Skipper
 	if skipper == nil {
-		skipper = cod.DefaultSkipper
+		skipper = elton.DefaultSkipper
 	}
-	return func(c *cod.Context) (err error) {
+	return func(c *elton.Context) (err error) {
 		if skipper(c) {
 			return c.Next()
 		}

@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/vicanso/cod"
+	"github.com/vicanso/elton"
 	"gopkg.in/h2non/gock.v1"
 )
 
@@ -71,7 +71,7 @@ func TestProxy(t *testing.T) {
 		originalPath := req.URL.Path
 		originalHost := req.Host
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		done := false
 		c.Next = func() error {
 			done = true
@@ -90,8 +90,8 @@ func TestProxy(t *testing.T) {
 		target, _ := url.Parse("https://www.baidu.com")
 		callBackDone := false
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
-				return target, func(_ *cod.Context) {
+			TargetPicker: func(c *elton.Context) (*url.URL, Done, error) {
+				return target, func(_ *elton.Context) {
 					callBackDone = true
 				}, nil
 			},
@@ -101,7 +101,7 @@ func TestProxy(t *testing.T) {
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		done := false
 		c.Next = func() error {
 			done = true
@@ -116,7 +116,7 @@ func TestProxy(t *testing.T) {
 	t.Run("target picker error", func(t *testing.T) {
 		assert := assert.New(t)
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+			TargetPicker: func(c *elton.Context) (*url.URL, Done, error) {
 				return nil, nil, errors.New("abcd")
 			},
 			Host:      "www.baidu.com",
@@ -125,7 +125,7 @@ func TestProxy(t *testing.T) {
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		err := fn(c)
 		assert.Equal(err.Error(), "abcd")
 	})
@@ -133,7 +133,7 @@ func TestProxy(t *testing.T) {
 	t.Run("no target", func(t *testing.T) {
 		assert := assert.New(t)
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+			TargetPicker: func(c *elton.Context) (*url.URL, Done, error) {
 				return nil, nil, nil
 			},
 			Host:      "www.baidu.com",
@@ -142,16 +142,16 @@ func TestProxy(t *testing.T) {
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		err := fn(c)
-		assert.Equal(err.Error(), "category=cod-proxy, message=target can not be nil")
+		assert.Equal(err.Error(), "category=elton-proxy, message=target can not be nil")
 	})
 
 	t.Run("proxy error", func(t *testing.T) {
 		assert := assert.New(t)
 		target, _ := url.Parse("https://a")
 		config := Config{
-			TargetPicker: func(c *cod.Context) (*url.URL, Done, error) {
+			TargetPicker: func(c *elton.Context) (*url.URL, Done, error) {
 				return target, nil, nil
 			},
 			Transport: &http.Transport{},
@@ -159,7 +159,7 @@ func TestProxy(t *testing.T) {
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		c.Next = func() error {
 			return nil
 		}
@@ -175,14 +175,14 @@ func TestProxy(t *testing.T) {
 			Target:    target,
 			Host:      "www.baidu.com",
 			Transport: &http.Transport{},
-			Done: func(_ *cod.Context) {
+			Done: func(_ *elton.Context) {
 				done = true
 			},
 		}
 		fn := New(config)
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		c.Next = func() error {
 			return nil
 		}
@@ -212,7 +212,7 @@ func BenchmarkProxy(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		req := httptest.NewRequest("GET", "http://127.0.0.1/", nil)
 		resp := httptest.NewRecorder()
-		c := cod.NewContext(resp, req)
+		c := elton.NewContext(resp, req)
 		c.Next = func() error {
 			return nil
 		}

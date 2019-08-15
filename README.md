@@ -1,8 +1,8 @@
-# cod-proxy
+# elton-proxy
 
-[![Build Status](https://img.shields.io/travis/vicanso/cod-proxy.svg?label=linux+build)](https://travis-ci.org/vicanso/cod-proxy)
+[![Build Status](https://img.shields.io/travis/vicanso/elton-proxy.svg?label=linux+build)](https://travis-ci.org/vicanso/elton-proxy)
 
-Proxy middleware for cod, it can proxy http request to other host.
+Proxy middleware for elton, it can proxy http request to other host.
 
 ```go
 package main
@@ -10,13 +10,13 @@ package main
 import (
 	"net/url"
 
-	"github.com/vicanso/cod"
+	"github.com/vicanso/elton"
 
-	proxy "github.com/vicanso/cod-proxy"
+	proxy "github.com/vicanso/elton-proxy"
 )
 
 func main() {
-	d := cod.New()
+	d := elton.New()
 
 	target, _ := url.Parse("https://www.baidu.com")
 

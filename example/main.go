@@ -1,10 +1,3 @@
-# elton-proxy
-
-[![Build Status](https://img.shields.io/travis/vicanso/elton-proxy.svg?label=linux+build)](https://travis-ci.org/vicanso/elton-proxy)
-
-Proxy middleware for elton, it can proxy http request to other host.
-
-```go
 package main
 
 import (
@@ -31,9 +24,11 @@ func main() {
 		},
 		Target: target,
 		// change the request host
-		Host:   "www.baidu.com",
+		Host: "www.baidu.com",
 	}))
 
-	d.ListenAndServe(":3000")
+	err := d.ListenAndServe(":3000")
+	if err != nil {
+		panic(err)
+	}
 }
-```

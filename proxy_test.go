@@ -77,7 +77,8 @@ func TestProxy(t *testing.T) {
 			done = true
 			return nil
 		}
-		fn(c)
+		err := fn(c)
+		assert.Nil(err)
 		assert.Equal(c.GetHeader("Content-Encoding"), "gzip")
 		assert.Equal(c.Request.URL.Path, originalPath)
 		assert.Equal(req.Host, originalHost)
@@ -107,7 +108,8 @@ func TestProxy(t *testing.T) {
 			done = true
 			return nil
 		}
-		fn(c)
+		err := fn(c)
+		assert.Nil(err)
 		assert.True(done)
 		assert.True(callBackDone)
 		assert.Equal(c.StatusCode, http.StatusOK)
@@ -186,7 +188,8 @@ func TestProxy(t *testing.T) {
 		c.Next = func() error {
 			return nil
 		}
-		fn(c)
+		err := fn(c)
+		assert.Nil(err)
 		assert.True(done)
 	})
 }
@@ -216,7 +219,7 @@ func BenchmarkProxy(b *testing.B) {
 		c.Next = func() error {
 			return nil
 		}
-		fn(c)
+		_ = fn(c)
 	}
 }
 

@@ -7,13 +7,12 @@ github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8
 github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32/go.mod h1:9wM+0iRr9ahx58uYLpLIr5fm8diHn0JbqRycJi6w0Ms=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/stretchr/objx v0.1.0 h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
-github.com/vicanso/elton v0.2.2 h1:MZ5nfJFKBWDWnFPO8wRyPat8kZz3KoNBY0scemo7RFQ=
-github.com/vicanso/elton v0.2.2/go.mod h1:QFZ+Un4LLBANtl0mExkqLD4uqw3JLA2ZCWUHaCsHOUg=
+github.com/vicanso/elton v0.2.3 h1:XQskGFtw/hhtNXRU7dLX0OFcpG64pK4PMXh9CVjHVbA=
+github.com/vicanso/elton v0.2.3/go.mod h1:QFZ+Un4LLBANtl0mExkqLD4uqw3JLA2ZCWUHaCsHOUg=
 github.com/vicanso/hes v0.2.1 h1:jRFEADmiQ30koVY/sKwlkhyXM5B3QbVVizLqrjNJgPw=
 github.com/vicanso/hes v0.2.1/go.mod h1:QcxOFmFfBQMhASTaLgnFayXYCgevdSeBVprt+o+3eKo=
 github.com/vicanso/intranet-ip v0.0.1 h1:cYS+mExFsKqewWSuHtFwAqw/CO66GsheB/P1BPmSTx0=

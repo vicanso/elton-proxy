@@ -16,11 +16,11 @@ import (
 )
 
 func main() {
-	d := elton.New()
+	e := elton.New()
 
 	target, _ := url.Parse("https://www.baidu.com")
 
-	d.GET("/*url", proxy.New(proxy.Config{
+	e.GET("/*url", proxy.New(proxy.Config{
 		// proxy done will call this function
 		Done: func(c *elton.Context) {
 
@@ -34,6 +34,9 @@ func main() {
 		Host:   "www.baidu.com",
 	}))
 
-	d.ListenAndServe(":3000")
+	err := e.ListenAndServe(":3000")
+	if err != nil {
+		panic(err)
+	}
 }
 ```

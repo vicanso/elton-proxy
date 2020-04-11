@@ -1,5 +1,7 @@
 # elton-proxy
 
+The middleware has been archived, please use the middleware of [elton](https://github.com/vicanso/elton).
+
 [![Build Status](https://img.shields.io/travis/vicanso/elton-proxy.svg?label=linux+build)](https://travis-ci.org/vicanso/elton-proxy)
 
 Proxy middleware for elton, it can proxy http request to other host.
